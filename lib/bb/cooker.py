@@ -2197,6 +2197,7 @@ class CookerParser(object):
         self.results = self.load_cached()
         self.processes = []
         if self.toparse:
+            bb.server.process.serverlog("Parsing started")
             bb.event.fire(bb.event.ParseStarted(self.toparse), self.cfgdata)
 
             self.parser_quit = multiprocessing.Event()
@@ -2220,6 +2221,8 @@ class CookerParser(object):
         if self.haveshutdown:
             return
         self.haveshutdown = True
+
+        bb.server.process.serverlog("Parsing cleaning up")
 
         if clean:
             event = bb.event.ParseCompleted(self.cached, self.parsed,
